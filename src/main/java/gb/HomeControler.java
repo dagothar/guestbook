@@ -2,12 +2,13 @@ package gb;
 
 import java.util.List;
 import javax.validation.Valid;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -21,34 +22,35 @@ public class HomeControler {
     private EntryRepository entryRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView home(
+    public String home(
             @RequestParam(value = "offset", defaultValue = "0") Long offset,
-            @RequestParam(value = "limit", defaultValue = "5") Long limit,
-            ModelAndView mav
+            @RequestParam(value = "limit", defaultValue = "3") Long limit,
+            Model m
     ) {
+        Entry newEntry = new Entry(0, "", "", new LocalDateTime());
+        m.addAttribute("newEntry", newEntry);
+        
         List<Entry> entries = entryRepository.findEntries(offset, limit);
-        mav.addObject("entries", entries);
+        m.addAttribute("entries", entries);
 
         if (offset > 0) {
-            Long prevPageId = offset - limit;
-            prevPageId = (prevPageId > 0 ? prevPageId : 0);
-            mav.addObject("prevPageId", prevPageId);
+            Long prevOffset = offset - limit;
+            prevOffset = (prevOffset > 0) ? prevOffset : 0;
+            m.addAttribute("prevOffset", prevOffset);
         }
 
-        if (entries.size() == limit) {
-            Long nextPageId = offset + limit;
-            mav.addObject("nextPageId", nextPageId);
+        if (offset < entryRepository.findAll().size() - limit) {
+            Long nextOffset = offset + limit;
+            m.addAttribute("nextOffset", nextOffset);
         }
 
-        mav.setViewName("home");
-
-        return mav;
+        return "home";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView addEntry(@Valid ModelAndView mav) {
-        mav.setViewName("home");
+    public String addEntry(@Valid Entry entry) {        
+        entryRepository.addEntry(entry);
 
-        return mav;
+        return "redirect:/";
     }
 }

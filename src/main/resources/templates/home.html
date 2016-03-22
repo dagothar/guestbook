@@ -12,32 +12,59 @@
     <body>
         <nav class="navbar navbar-inverse">
             <div class="container">
-                <a class="navbar-brand text-center center-block" href="#">Guestbook</a>
+                <a class="navbar-brand text-center center-block" href="#" th:href="@{/}">Guestbook</a>
             </div>
         </nav>
 
         <div class="container">
             <div class="row">
-                <ul class="list-group">
-                    <h3>Previous entries:</h3>
-                    <li th:each="entry : ${entries}" class="list-group-item">
-                        <blockquote>
-                            <p th:text="${entry.message}">This is the entry message</p>
-                            <footer><span th:text="${entry.author}">Author</span> at <span th:text="${#dates.format(entry.dateTime,'dd-MM-yyyy hh:mm:ss')}"></span></footer>
-                        </blockquote>
-                    </li>
-                </ul>
 
-                <nav>
-                    <ul class="pager">
-                        <li class="pager-prev" th:classappend="${prevPageId} ? '' : 'disabled'">
-                            <a href="#" th:href="${prevPageId} ? @{/}+'?offset='+${prevPageId} : '#'">Previous</a>
-                        </li>
-                        <li class="pager-next" th:classappend="${nextPageId} ? '' : 'disabled'">
-                            <a href="#" th:href="${nextPageId} ? @{/}+'?offset='+${nextPageId} : '#'">Next page</a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Leave new message
+                    </div>
+                    <div class="panel-body">
+                        <form method="POST" action="#" th:action="@{/}" th:object="${newEntry}">
+                            <div class="form-group">
+                                <label for="comment">Your message:</label>
+                                <textarea class="form-control" rows="3" id="message" placeholder="Leave a message" th:field="*{message}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Your name:</label>
+                                <input type="text" class="form-control" id="author" placeholder="Sign here" th:field="*{author}"/>
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Add new entry"/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Previous entries
+                    </div>
+
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li th:each="entry : ${entries}" class="list-group-item">
+                                <blockquote>
+                                    <p th:text="${entry.message}">This is the entry message</p>
+                                    <footer><span th:text="${entry.author}">Author</span> at <span th:text="${#dates.format(entry.dateTime,'dd-MM-yyyy hh:mm:ss')}"></span></footer>
+                                </blockquote>
+                            </li>
+                        </ul>
+
+                        <nav>
+                            <ul class="pager">
+                                <li class="pager-prev" th:classappend="${prevOffset} != null ? '' : 'disabled'">
+                                    <a href="#" th:href="${prevOffset} != null ? @{/}+'?offset='+${prevOffset} : '#'">Previous</a>
+                                </li>
+                                <li class="pager-next" th:classappend="${nextOffset} != null ? '' : 'disabled'">
+                                    <a href="#" th:href="${nextOffset} != null ? @{/}+'?offset='+${nextOffset} : '#'">Next page</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         </div>
 

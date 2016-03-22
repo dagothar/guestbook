@@ -32,7 +32,7 @@ public class EntryRepository {
     }
 
     public List<Entry> findEntries(Long offset, Long limit) {
-        String sql = "SELECT * FROM Entries OFFSET ? LIMIT ?";
+        String sql = "SELECT * FROM Entries ORDER BY Entries.dateTime DESC OFFSET ? LIMIT ?";
 
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[]{offset, limit});
 
@@ -45,21 +45,6 @@ public class EntryRepository {
                     (String) row.get("author"),
                     new LocalDateTime(row.get("dateTime"))
             );
-            entries.add(entry);
-        }
-
-        return entries;
-    }
-
-    public List<Entry> findForIdsBetween(Long from, Long to) {
-        String sql = "SELECT * FROM Entries WHERE id >= ? AND id <= ?";
-
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[]{from, to});
-
-        List<Entry> entries = new ArrayList<>();
-
-        for (Map row : rows) {
-            Entry entry = new Entry((Integer) row.get("id"), (String) row.get("message"), (String) row.get("author"), new LocalDateTime(row.get("dateTime")));
             entries.add(entry);
         }
 

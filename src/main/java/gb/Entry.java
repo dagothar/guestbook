@@ -16,7 +16,7 @@ public class Entry {
     @Size(min = 1, max = 255, message = "Author name cannot be empty!")
     private String author;
 
-    @NotNull
+    //@NotNull
     private LocalDateTime dateTime;
 
     public Entry() {
