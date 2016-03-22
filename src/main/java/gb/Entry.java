@@ -9,11 +9,11 @@ public class Entry {
     private int id;
 
     @NotNull
-    @Size(min = 1, max = 255, message = "Message cannot be empty!")
+    @Size(min = 1, max = 255, message = "{message.size}")
     private String message;
 
     @NotNull
-    @Size(min = 1, max = 255, message = "Author name cannot be empty!")
+    @Size(min = 1, max = 255, message = "{author.size}")
     private String author;
 
     //@NotNull

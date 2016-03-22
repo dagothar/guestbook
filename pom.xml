@@ -44,12 +44,12 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.2</version>
         </dependency>
-    
+        
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-joda</artifactId>
-            <version>2.7.3</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
+        
     </dependencies>
 
     <properties>
