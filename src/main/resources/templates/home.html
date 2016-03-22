@@ -3,15 +3,50 @@
     <head>
         <title>Guestbook</title>
         <meta charset="UTF-8"/>
-        
+
         <!-- css -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}"/>
     </head>
-    
+
     <body>
-        <div>TODO write content</div>
-        
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <a class="navbar-brand text-center center-block" href="#">Guestbook</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <ul class="list-group">
+                    <h3>Previous entries:</h3>
+                    <li th:each="entry : ${entries}" class="list-group-item">
+                        <blockquote>
+                            <p th:text="${entry.message}">This is the entry message</p>
+                            <footer><span th:text="${entry.author}">Author</span> at <span th:text="${#dates.format(entry.dateTime,'dd-MM-yyyy hh:mm:ss')}"></span></footer>
+                        </blockquote>
+                    </li>
+                </ul>
+
+                <nav>
+                    <ul class="pager">
+                        <li class="pager-prev" th:classappend="${prevPageId} ? '' : 'disabled'">
+                            <a href="#" th:href="${prevPageId} ? @{/}+'?offset='+${prevPageId} : '#'">Previous</a>
+                        </li>
+                        <li class="pager-next" th:classappend="${nextPageId} ? '' : 'disabled'">
+                            <a href="#" th:href="${nextPageId} ? @{/}+'?offset='+${nextPageId} : '#'">Next page</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                Copyright by Dagothar 2016
+            </div>
+        </footer>
+
         <!-- js -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
         <script src="../static/js/main.js" th:src="@{/css/main.js}"></script>
